@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TODOCreate extends StatefulWidget {
-  final createTask;
 
-  TODOCreate({@required this.createTask});
   @override
   _TODOCreateState createState() => _TODOCreateState();
 }
 
 class _TODOCreateState extends State<TODOCreate> {
   final TextEditingController controller = TextEditingController();
+  final collection = Firestore.instance.collection('tasks');
 
   @override
   Widget build(BuildContext context) {
@@ -31,16 +31,14 @@ class _TODOCreateState extends State<TODOCreate> {
             autofocus: true,
             controller: controller,
             decoration: InputDecoration(
-              labelText: "Enter the task",
-              icon: Icon(Icons.insert_comment)
-            ),
+                labelText: "Enter the task", icon: Icon(Icons.insert_comment)),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
-        onPressed: () {
-          widget.createTask(controller.text);
+        onPressed: () async {
+          await collection.add({'name': controller.text, 'completed': false});
           Navigator.pop(context);
         },
         child: Icon(Icons.done),

@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'widgets/todo_list.dart';
-import 'widgets/todo_create.dart';
+import 'widgets/list.dart';
+import 'widgets/create.dart';
+import 'widgets/login.dart';
 import './task.dart';
+import './auth.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,6 +15,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final List<Task> tasks = [];
+  final Authentication auth = new Authentication();
+  FirebaseUser user;
 
   void createTask(String name) {
     setState(() {
@@ -25,6 +30,12 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void onLogin(FirebaseUser user) {
+    setState(() {
+      this.user = user;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,8 +43,10 @@ class _MyAppState extends State<MyApp> {
       title: 'TODO App',
       // home: Home(),
       routes: {
-        '/': (context) => TODOList(tasks: tasks, completeTask: completeTask),
-        '/create': (context) => TODOCreate(createTask: createTask),
+        '/': (context) => TODOLogin(onLogin: onLogin),
+        '/list': (context) =>
+            TODOList(),
+        '/create': (context) => TODOCreate(),
       },
     );
   }
