@@ -19,8 +19,9 @@ class _MyAppState extends State<MyApp> {
   FirebaseUser user;
 
   void createTask(String name) {
+    var uId = this.user.uid;
     setState(() {
-      tasks.add(Task(name, false));
+      tasks.add(Task(name, false, uId));
     });
   }
 
@@ -44,9 +45,8 @@ class _MyAppState extends State<MyApp> {
       // home: Home(),
       routes: {
         '/': (context) => TODOLogin(onLogin: onLogin),
-        '/list': (context) =>
-            TODOList(),
-        '/create': (context) => TODOCreate(),
+        '/list': (context) => TODOList(user),
+        '/create': (context) => TODOCreate(user),
       },
     );
   }
