@@ -1,4 +1,4 @@
-# startup_name_generator
+# TODO App
 
 A new Flutter project.
 
